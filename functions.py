@@ -6,8 +6,11 @@ def clean_column_names(df: pd.DataFrame) -> pd.DataFrame:
     '''
     Modifies column names of a dataframe, changing them to lowercase and switching the spaces with underscores.
     '''
-    for c in range(len(df.columns)):
-        df.columns.values[c] = df.columns.values[c].lower().replace(' ', '_')
+    new_cols = []
+    for c in df.columns:
+        new_c = c.lower().replace(' ', '_')
+        new_cols.append(new_c)
+    df.columns = new_cols
     return df
 
 
@@ -159,8 +162,8 @@ def fix_complaints_column(df: pd.DataFrame, colname='number_of_open_complaints')
     - Else, splits the string by '/' and keeps the second value 
     '''
     def process_string(value):
-        if len(value) == 1:
-            return int(value)
+        if len(str(value)) == 1:
+            return value
         else:
             return int(value.split('/')[1])
     df[colname] = df[colname].apply(process_string)
